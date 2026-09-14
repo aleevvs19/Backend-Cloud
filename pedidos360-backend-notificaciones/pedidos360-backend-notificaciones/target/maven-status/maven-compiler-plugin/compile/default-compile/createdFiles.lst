@@ -1,0 +1,5 @@
+com\pedidos360\notificaciones\Pedidos360BackendNotificacionesApplication.class
+com\pedidos360\notificaciones\service\NotificacionListener.class
+com\pedidos360\notificaciones\Config\SecurityConfig.class
+com\pedidos360\notificaciones\dto\PedidoEventDTO.class
+com\pedidos360\notificaciones\Config\RabbitMQConfig.class
