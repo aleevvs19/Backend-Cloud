@@ -1,0 +1,21 @@
+﻿server:
+  port: 8081
+
+spring:
+  application:
+    name: notificaciones-service
+
+  # --- SEGURIDAD ---
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://login.microsoftonline.com/${AZURE_TENANT_ID:tu-tenant-id}/v2.0
+          jwk-set-uri: https://login.microsoftonline.com/${AZURE_TENANT_ID:tu-tenant-id}/discovery/v2.0/keys
+
+  # --- RABBITMQ ---
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: 5672
+    username: ${RABBITMQ_USER:guest}
+    password: ${RABBITMQ_PASS:guest}
