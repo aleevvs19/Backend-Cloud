@@ -1,12 +1,13 @@
-# Usa Java 21 súper ligero
-FROM eclipse-temurin:21-jdk-alpine
-
+# Etapa 1: compilar con Maven
+FROM maven:3.9-eclipse-temurin-21-alpine AS build
 WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-# Copia el .jar compilado
-COPY target/*.jar app.jar
-
-# Expone el puerto 8080
+# Etapa 2: imagen final, liviana, solo con el jar
+FROM eclipse-temurin:21-jdk-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-
 ENTRYPOINT ["java", "-jar", "app.jar"]
