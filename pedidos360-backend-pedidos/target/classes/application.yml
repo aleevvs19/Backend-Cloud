@@ -1,46 +1,39 @@
-services:
+﻿server:
+  port: 8080
+
+spring:
+  application:
+    name: pedidos-service
+
+  # --- CONFIGURACIÓN H2 ---
+  datasource:
+    url: jdbc:h2:mem:pedidos360_db
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  # --- SEGURIDAD ---
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://login.microsoftonline.com/${AZURE_TENANT_ID:tu-tenant-id}/v2.0
+          jwk-set-uri: https://login.microsoftonline.com/${AZURE_TENANT_ID:tu-tenant-id}/discovery/v2.0/keys
+
+  # --- RABBITMQ ---
   rabbitmq:
-    image: rabbitmq:3-management
-    container_name: rabbitmq-server
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
-    healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    restart: always
-
-  pedidos-service:
-    build:
-      context: ./pedidos360-backend-pedidos
-    container_name: pedidos-api
-    ports:
-      - "8080:8080"
-    environment:
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_USER: guest
-      RABBITMQ_PASS: guest
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    restart: always
-
-  notificaciones-service:
-    build:
-      context: ./pedidos360-backend-notificaciones
-    container_name: notificaciones-worker
-    ports:
-      - "8081:8081"
-    environment:
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_USER: guest
-      RABBITMQ_PASS: guest
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    restart: always
+    host: ${RABBITMQ_HOST:localhost}
+    port: 5672
+    username: ${RABBITMQ_USER:guest}
+    password: ${RABBITMQ_PASS:guest}
