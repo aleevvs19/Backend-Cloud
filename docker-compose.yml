@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-server
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    restart: always
+
+  pedidos-service:
+    build: 
+      context: ./pedidos360-backend-pedidos
+    container_name: pedidos-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - rabbitmq
+    restart: always
+
+  notificaciones-service:
+    build: 
+      context: ./pedidos360-backend-notificaciones
+    container_name: notificaciones-worker
+    ports:
+      - "8081:8081"
+    depends_on:
+      - rabbitmq
+    restart: always
