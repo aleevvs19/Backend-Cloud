@@ -1,13 +1,13 @@
 ﻿server:
-  port: 8080
+  port: 8081
 
 spring:
   application:
-    name: pedidos-service
+    name: notificaciones-service
 
   # --- CONFIGURACIÓN H2 ---
   datasource:
-    url: jdbc:h2:mem:pedidos360_db
+    url: jdbc:h2:mem:notificaciones_db
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -28,8 +28,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://login.microsoftonline.com/8e80f94c-2366-4206-8648-dd4a63286b84/v2.0
-          jwk-set-uri: https://login.microsoftonline.com/8e80f94c-2366-4206-8648-dd4a63286b84/discovery/v2.0/keys
+          issuer-uri: https://login.microsoftonline.com/${AZURE_TENANT_ID:tu-tenant-id}/v2.0
+          jwk-set-uri: https://login.microsoftonline.com/${AZURE_TENANT_ID:tu-tenant-id}/discovery/v2.0/keys
 
   # --- RABBITMQ ---
   rabbitmq:

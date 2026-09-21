@@ -28,8 +28,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://login.microsoftonline.com/${AZURE_TENANT_ID:tu-tenant-id}/v2.0
-          jwk-set-uri: https://login.microsoftonline.com/${AZURE_TENANT_ID:tu-tenant-id}/discovery/v2.0/keys
+          issuer-uri: https://login.microsoftonline.com/8e80f94c-2366-4206-8648-dd4a63286b84/v2.0
+          jwk-set-uri: https://login.microsoftonline.com/8e80f94c-2366-4206-8648-dd4a63286b84/discovery/v2.0/keys
 
   # --- RABBITMQ ---
   rabbitmq:
