@@ -79,13 +79,19 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // CORS para Angular
+    // CORS para Angular (Local y AWS EC2)
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(
-            Arrays.asList("http://localhost:4200")
+            Arrays.asList(
+                "http://localhost:4200",
+                "http://100.50.157.1",
+                "https://100.50.157.1",
+                "http://100.50.157.1:8080",
+                "https://100.50.157.1:8080"
+            )
         );
 
         configuration.setAllowedMethods(
