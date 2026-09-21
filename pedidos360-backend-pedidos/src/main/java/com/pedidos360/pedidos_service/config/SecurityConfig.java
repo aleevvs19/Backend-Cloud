@@ -28,49 +28,113 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            // 1. Habilitamos CORS usando el Bean configurado más abajo
+            // CORS
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
+            // CSRF desactivado para la API
             .csrf(csrf -> csrf.disable())
+
+            // Permisos
             .authorizeHttpRequests(auth -> auth
+                // Consola H2 para desarrollo local
+                .requestMatchers("/h2-console/**").permitAll()
+
+                // Actuator
                 .requestMatchers("/actuator/**").permitAll()
-                .requestMatchers("/api/pedidos/cocina/**").hasAnyAuthority("ROLE_Operador_Cocina", "ROLE_Administrador_Local", "ROLE_Administrador_General")
-                .requestMatchers("/api/pedidos/admin/**").hasAnyAuthority("ROLE_Administrador_Local", "ROLE_Administrador_General")
+
+                // Roles de cocina
+                .requestMatchers("/api/pedidos/cocina/**")
+                    .hasAnyAuthority(
+                        "ROLE_Operador_Cocina",
+                        "ROLE_Administrador_Local",
+                        "ROLE_Administrador_General"
+                    )
+
+                // Roles de administración
+                .requestMatchers("/api/pedidos/admin/**")
+                    .hasAnyAuthority(
+                        "ROLE_Administrador_Local",
+                        "ROLE_Administrador_General"
+                    )
+
+                // Pedidos requieren autenticación
                 .requestMatchers("/api/pedidos/**").authenticated()
+
+                // Todo lo demás requiere autenticación
                 .anyRequest().authenticated()
             )
+
+            // Permitir que la consola H2 se muestre correctamente
+            .headers(headers -> headers
+                .frameOptions(frame -> frame.sameOrigin())
+            )
+
+            // OAuth2 Resource Server / JWT
             .oauth2ResourceServer(oauth2 -> oauth2
-                .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
+                .jwt(jwt -> jwt
+                    .jwtAuthenticationConverter(jwtAuthenticationConverter())
+                )
             );
 
         return http.build();
     }
 
-    // 2. Definimos las reglas de CORS para permitir a Angular
+    // CORS para Angular
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Permite peticiones desde el servidor de desarrollo de Angular
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200")); 
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*")); // Permite todos los headers (incluyendo Authorization Bearer)
-        configuration.setAllowCredentials(true); // Necesario para enviar tokens
-        
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+        configuration.setAllowedOrigins(
+            Arrays.asList("http://localhost:4200")
+        );
+
+        configuration.setAllowedMethods(
+            Arrays.asList(
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "OPTIONS"
+            )
+        );
+
+        configuration.setAllowedHeaders(
+            Arrays.asList("*")
+        );
+
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source =
+            new UrlBasedCorsConfigurationSource();
+
         source.registerCorsConfiguration("/**", configuration);
+
         return source;
     }
 
+    // Convierte los roles de Microsoft Entra ID
+    // en authorities de Spring Security
     private Converter<Jwt, AbstractAuthenticationToken> jwtAuthenticationConverter() {
-        JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
+
+        JwtAuthenticationConverter jwtConverter =
+            new JwtAuthenticationConverter();
+
         jwtConverter.setJwtGrantedAuthoritiesConverter(jwt -> {
-            List<String> roles = jwt.getClaimAsStringList("roles");
+
+            List<String> roles =
+                jwt.getClaimAsStringList("roles");
+
             if (roles == null || roles.isEmpty()) {
                 return Collections.emptyList();
             }
+
             return roles.stream()
-                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                    .collect(Collectors.toList());
+                .map(role ->
+                    new SimpleGrantedAuthority("ROLE_" + role)
+                )
+                .collect(Collectors.toList());
         });
+
         return jwtConverter;
     }
 }

@@ -1,0 +1,17 @@
+com\pedidos360\pedidos_service\entity\DetallePedido.class
+com\pedidos360\pedidos_service\entity\Pedido$EstadoPedido.class
+com\pedidos360\pedidos_service\DataInitializer.class
+com\pedidos360\pedidos_service\entity\Pedido$PedidoBuilder.class
+com\pedidos360\pedidos_service\entity\Pedido$TipoEntrega.class
+com\pedidos360\pedidos_service\PedidosServiceApplication.class
+com\pedidos360\pedidos_service\config\SecurityConfig.class
+com\pedidos360\pedidos_service\entity\Producto$ProductoBuilder.class
+com\pedidos360\pedidos_service\entity\DetallePedido$DetallePedidoBuilder.class
+com\pedidos360\pedidos_service\controller\ProductoController.class
+com\pedidos360\pedidos_service\entity\Pedido.class
+com\pedidos360\pedidos_service\repository\PedidoRepository.class
+com\pedidos360\pedidos_service\controller\PedidoController.class
+com\pedidos360\pedidos_service\repository\ProductoRepository.class
+com\pedidos360\pedidos_service\config\RabbitMQConfig.class
+com\pedidos360\pedidos_service\entity\Producto.class
+com\pedidos360\pedidos_service\service\PedidoService.class

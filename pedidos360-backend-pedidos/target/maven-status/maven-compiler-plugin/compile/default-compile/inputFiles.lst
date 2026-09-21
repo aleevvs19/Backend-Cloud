@@ -1,0 +1,12 @@
+C:\Users\pv-alumno\Downloads\Backend-Cloud\pedidos360-backend-pedidos\src\main\java\com\pedidos360\pedidos_service\config\RabbitMQConfig.java
+C:\Users\pv-alumno\Downloads\Backend-Cloud\pedidos360-backend-pedidos\src\main\java\com\pedidos360\pedidos_service\config\SecurityConfig.java
+C:\Users\pv-alumno\Downloads\Backend-Cloud\pedidos360-backend-pedidos\src\main\java\com\pedidos360\pedidos_service\controller\PedidoController.java
+C:\Users\pv-alumno\Downloads\Backend-Cloud\pedidos360-backend-pedidos\src\main\java\com\pedidos360\pedidos_service\controller\ProductoController.java
+C:\Users\pv-alumno\Downloads\Backend-Cloud\pedidos360-backend-pedidos\src\main\java\com\pedidos360\pedidos_service\DataInitializer.java
+C:\Users\pv-alumno\Downloads\Backend-Cloud\pedidos360-backend-pedidos\src\main\java\com\pedidos360\pedidos_service\entity\DetallePedido.java
+C:\Users\pv-alumno\Downloads\Backend-Cloud\pedidos360-backend-pedidos\src\main\java\com\pedidos360\pedidos_service\entity\Pedido.java
+C:\Users\pv-alumno\Downloads\Backend-Cloud\pedidos360-backend-pedidos\src\main\java\com\pedidos360\pedidos_service\entity\Producto.java
+C:\Users\pv-alumno\Downloads\Backend-Cloud\pedidos360-backend-pedidos\src\main\java\com\pedidos360\pedidos_service\PedidosServiceApplication.java
+C:\Users\pv-alumno\Downloads\Backend-Cloud\pedidos360-backend-pedidos\src\main\java\com\pedidos360\pedidos_service\repository\PedidoRepository.java
+C:\Users\pv-alumno\Downloads\Backend-Cloud\pedidos360-backend-pedidos\src\main\java\com\pedidos360\pedidos_service\repository\ProductoRepository.java
+C:\Users\pv-alumno\Downloads\Backend-Cloud\pedidos360-backend-pedidos\src\main\java\com\pedidos360\pedidos_service\service\PedidoService.java
