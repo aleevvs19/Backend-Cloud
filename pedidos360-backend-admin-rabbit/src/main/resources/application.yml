@@ -3,9 +3,14 @@ server:
 
 spring:
   application:
-    name: pedidos360-admin-rabbit
+    name: admin-rabbit
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:guest}
+    password: ${RABBITMQ_PASS:guest}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI}   # el mismo que usas en pedidos y notificaciones
