@@ -1,0 +1,12 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: rabbit-admin
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    username: ${RABBITMQ_USER:guest}
+    password: ${RABBITMQ_PASS:guest}
+admin:
+  user: ${ADMIN_USER:admin}
+  password: ${ADMIN_PASS:}

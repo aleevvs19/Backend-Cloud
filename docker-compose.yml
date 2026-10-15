@@ -8,8 +8,8 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-pedidos360}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS:?Define RABBITMQ_PASS en .env}
     restart: always
 
   pedidos-service:
@@ -21,6 +21,10 @@ services:
     depends_on:
       - rabbitmq
     restart: always
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_USER: ${RABBITMQ_USER:-pedidos360}
+      RABBITMQ_PASS: ${RABBITMQ_PASS:?Define RABBITMQ_PASS en .env}
 
   notificaciones-service:
     build: 
@@ -31,6 +35,10 @@ services:
     depends_on:
       - rabbitmq
     restart: always
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_USER: ${RABBITMQ_USER:-pedidos360}
+      RABBITMQ_PASS: ${RABBITMQ_PASS:?Define RABBITMQ_PASS en .env}
 
   nginx:
     image: nginx:alpine
@@ -43,3 +51,16 @@ services:
       - pedidos-service
       - notificaciones-service
     restart: always
+  rabbit-admin:
+    build: ./pedidos360-backend-rabbit-admin
+    container_name: rabbit-admin
+    ports:
+      - "127.0.0.1:8082:8082"
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_USER: ${RABBITMQ_USER:-pedidos360}
+      RABBITMQ_PASS: ${RABBITMQ_PASS:?Define RABBITMQ_PASS en .env}
+      ADMIN_USER: ${ADMIN_USER:-admin}
+      ADMIN_PASS: ${ADMIN_PASS:?Define ADMIN_PASS en .env}
+    depends_on:
+      - rabbitmq

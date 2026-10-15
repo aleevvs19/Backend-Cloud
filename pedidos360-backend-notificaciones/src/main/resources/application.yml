@@ -37,17 +37,13 @@ spring:
     port: 5672
     username: ${RABBITMQ_USER:guest}
     password: ${RABBITMQ_PASS:guest}
-    listener:
-      simple:
-        acknowledge-mode: manual # Habilita el manejo explícito de ACK/NACK en los @RabbitListener
 
-# --- PROPIEDADES CENTRALIZADAS PARA RABBITMQ ---
-rabbitmq:
-  exchange:
-    topic: pedidos360.exchange
-  queue:
-    notificaciones: notificaciones.queue
-    dlq: notificaciones.dlq
-  routing:
-    notificaciones: notificacion.pedido.#
-    dlq: notificacion.dlq.routing
+pedidos360:
+  rabbit:
+    exchange: pedidos_exchange
+    routing-creado: pedido.creado
+    routing-actualizado: pedido.actualizado
+    queue: notificaciones_queue
+    dlx: pedidos_dead_exchange
+    dl-routing: pedido.fallido
+    dlq: notificaciones_dlq

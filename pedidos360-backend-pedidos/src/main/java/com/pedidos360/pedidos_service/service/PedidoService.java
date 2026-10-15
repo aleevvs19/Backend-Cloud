@@ -7,6 +7,7 @@ import com.pedidos360.pedidos_service.repository.PedidoRepository;
 import com.pedidos360.pedidos_service.repository.ProductoRepository;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,9 @@ import java.util.List;
 
 @Service
 public class PedidoService {
+    @Value("${pedidos360.rabbit.exchange}") private String pedidosExchange;
+    @Value("${pedidos360.rabbit.routing-creado}") private String routingCreado;
+    @Value("${pedidos360.rabbit.routing-actualizado}") private String routingActualizado;
 
     @Autowired
     private PedidoRepository pedidoRepository;
@@ -52,10 +56,10 @@ public class PedidoService {
         Pedido pedidoGuardado = pedidoRepository.save(pedido);
 
         try {
-            rabbitTemplate.convertAndSend("pedidosExchange", "pedido.creado", 
-                    "Nuevo Pedido #" + pedidoGuardado.getId() + " creado para sucursal " + pedidoGuardado.getSucursalId());
+            rabbitTemplate.convertAndSend(pedidosExchange, routingCreado,
+                    pedidoGuardado.getId() + "|" + pedidoGuardado.getUsuarioEmail() + "|" + pedidoGuardado.getEstado() + "|" + pedidoGuardado.getTotal());
         } catch (Exception e) {
-            System.err.println("Error enviando a RabbitMQ: " + e.getMessage());
+            throw new IllegalStateException("No fue posible publicar evento de pedido", e);
         }
 
         return pedidoGuardado;
@@ -69,14 +73,14 @@ public class PedidoService {
         Pedido pedido = pedidoRepository.findById(pedidoId)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
         pedido.setEstado(nuevoEstado);
-        
+
         Pedido actualizado = pedidoRepository.save(pedido);
 
         try {
-            rabbitTemplate.convertAndSend("pedidosExchange", "pedido.actualizado", 
-                    "Pedido #" + pedidoId + " cambio a estado: " + nuevoEstado);
+            rabbitTemplate.convertAndSend(pedidosExchange, routingActualizado,
+                    actualizado.getId() + "|" + actualizado.getUsuarioEmail() + "|" + actualizado.getEstado() + "|" + actualizado.getTotal());
         } catch (Exception e) {
-            System.err.println("Error publicando en RabbitMQ: " + e.getMessage());
+            throw new IllegalStateException("No fue posible publicar actualización", e);
         }
 
         return actualizado;

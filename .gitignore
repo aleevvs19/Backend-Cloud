@@ -1,0 +1,18 @@
+
+# Variables privadas
+.env
+.env.*
+
+!.env.example
+
+# Maven
+**/target/
+**/settings.xml
+
+# IDE
+.idea/
+.vscode/
+
+# Sistema
+.DS_Store
+Thumbs.db
