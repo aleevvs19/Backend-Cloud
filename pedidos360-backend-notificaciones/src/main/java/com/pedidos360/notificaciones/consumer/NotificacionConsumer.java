@@ -15,7 +15,7 @@ public class NotificacionConsumer {
 
     private static final Logger log = LoggerFactory.getLogger(NotificacionConsumer.class);
 
-    @RabbitListener(queues = "${rabbitmq.queue.notificaciones:notificaciones.queue}")
+    // @RabbitListener(queues = "${rabbitmq.queue.notificaciones:notificaciones.queue}")
     public void recibirMensajePedido(PedidoEventDTO pedido, Channel channel, Message message) throws IOException {
         long deliveryTag = message.getMessageProperties().getDeliveryTag();
 
