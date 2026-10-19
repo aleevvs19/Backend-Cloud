@@ -1,4 +1,4 @@
-﻿server:
+server:
   port: 8080
 
 spring:
@@ -28,7 +28,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://login.microsoftonline.com/8e80f94c-2366-4206-8648-dd4a63286b84/v2.0
+          issuer-uri: https://sts.windows.net/8e80f94c-2366-4206-8648-dd4a63286b84/
           jwk-set-uri: https://login.microsoftonline.com/8e80f94c-2366-4206-8648-dd4a63286b84/discovery/v2.0/keys
 
   # --- RABBITMQ ---
