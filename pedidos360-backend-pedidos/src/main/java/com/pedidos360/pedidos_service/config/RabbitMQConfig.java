@@ -1,16 +1,12 @@
 package com.pedidos360.pedidos_service.config;
-
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import org.springframework.beans.factory.annotation.Value;
 @Configuration
 public class RabbitMQConfig {
-
-    public static final String EXCHANGE_NAME = "pedidosExchange";
-
-    @Bean
-    public TopicExchange pedidosExchange() {
-        return new TopicExchange(EXCHANGE_NAME);
-    }
+  @Bean
+  public TopicExchange pedidosExchange(@Value("${pedidos360.rabbit.exchange}") String exchange) {
+    return new TopicExchange(exchange, true, false);
+  }
 }
